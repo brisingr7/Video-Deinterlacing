@@ -17,6 +17,8 @@ import glob
 from tqdm import tqdm
 import time
 
+np.random.seed(1337)
+
 # read paths
 video_paths = glob.glob("Videos/*/*.*", recursive=True)
 
@@ -31,16 +33,17 @@ for video_path in tqdm(video_paths):
         _ , frame = capture.read() # read frame
 
         try:
-            cv2.imwrite(f"dataset/ground_truth/{i}.bmp", frame) # write ground truth
-            #delete alternate even and odd rows
-            if i%2 == 0 :
-                frame = del_even(frame) #delete even rows
-            else:
-                frame = del_odd(frame) #delete odd
+            if np.random.uniform() > 0.66 : #Hack to reduce training samples (select 1/3rd of training images)
+                cv2.imwrite(f"dataset/ground_truth/{i}.bmp", frame) # write ground truth
+                #delete alternate even and odd rows
+                if i%2 == 0 :
+                    frame = del_even(frame) #delete even rows
+                else:
+                    frame = del_odd(frame) #delete odd
 
-            cv2.imwrite(f"dataset/interlaced/{i}.bmp", frame) #write interlaced frame
+                cv2.imwrite(f"dataset/interlaced/{i}.bmp", frame) #write interlaced frame
 
-            i += 1
+                i += 1
 
         except:
             break # this is stupid but it works
