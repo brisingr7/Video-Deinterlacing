@@ -28,24 +28,27 @@ video_paths = glob.glob("Videos/*/*.*", recursive=True)
 i = 0
 
 for video_path in tqdm(video_paths):
-    capture = cv2.VideoCapture(video_path)
-    while capture.isOpened() :
-        _ , frame = capture.read() # read frame
+    if np.random.uniform() > 0 :
+        print(video_path)
+        capture = cv2.VideoCapture(video_path)
+        while capture.isOpened() :
+            _ , frame = capture.read() # read frame
 
-        try:
-            if np.random.uniform() > 0.66 : #Hack to reduce training samples (select 1/3rd of training images)
-                cv2.imwrite(f"dataset/ground_truth/{i}.bmp", frame) # write ground truth
-                #delete alternate even and odd rows
-                if i%2 == 0 :
-                    frame = del_even(frame) #delete even rows
-                else:
-                    frame = del_odd(frame) #delete odd
+            try:
+                if True : #Hack to reduce training samples (select 1/3rd of training images)
+                    cv2.imwrite(f"dataset_new/ground_truth/1/{i}.bmp", frame) # write ground truth
+                    #delete alternate even and odd rows
+                    if i%2 == 0 :
+                        frame = del_even(frame) #delete even rows
+                    else:
+                        frame = del_odd(frame) #delete odd
 
-                cv2.imwrite(f"dataset/interlaced/{i}.bmp", frame) #write interlaced frame
+                    cv2.imwrite(f"dataset_new/interlaced/1/{i}.bmp", frame) #write interlaced frame
 
-                i += 1
+                    i += 1
 
-        except:
-            break # this is stupid but it works
+            except Exception as e:
+                print(e)
+                break # this is stupid but it works
 
-    capture.release()
+        capture.release()
