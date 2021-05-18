@@ -1,4 +1,13 @@
+.ipynb_checkpoints/*
 Videos/
 "project proposal.ipynb"
 "project proposal.pdf"
 dataset/
+Older files/
+models/
+results/
+test-output/
+test_gt/
+test_inter/
+*.bmp
+*.png
